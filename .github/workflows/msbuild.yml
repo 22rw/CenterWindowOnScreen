@@ -40,20 +40,21 @@ jobs:
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:platform=x64 ${{env.SOLUTION_FILE_PATH}}
 
     - name: release
-      uses: actions/create-release@v1
+      uses: actions/create-release@v1.1.4
       id: create_release
       with:
         draft: false
         prerelease: false
         release_name: Grab the binary!
         tag_name: ${{github.ref}}
+        body: "Build by github actions."
       env:
-        GITHUB_TOKEN: ${{github.token}}
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: upload windows artifact
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{github.token}}
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
         upload_url: ${{steps.create_release.outputs.upload_url}}
         asset_path: ./x64/Release/CenterWindowOnScreen.exe
