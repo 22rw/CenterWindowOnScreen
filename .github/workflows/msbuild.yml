@@ -39,8 +39,23 @@ jobs:
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:platform=x64 ${{env.SOLUTION_FILE_PATH}}
 
-      # Upload the compiled executable as a build artifact
-    - uses: actions/upload-artifact@master
+    - name: release
+      uses: actions/create-release@v1
+      id: create_release
       with:
-        name: CenterWindowOnScreen Executable
-        path: ./x64/Release/CenterWindowOnScreen.exe
+        draft: false
+        prerelease: false
+        release_name: Grab the binary!
+        tag_name: ${{github.ref}}
+      env:
+        GITHUB_TOKEN: ${{github.token}}
+
+    - name: upload windows artifact
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{github.token}}
+      with:
+        upload_url: ${{steps.create_release.outputs.upload_url}}
+        asset_path: ./x64/Release/CenterWindowOnScreen.exe
+        asset_name: CenterWindowOnScreen.exe
+        asset_content_type: application/x-msdownload
