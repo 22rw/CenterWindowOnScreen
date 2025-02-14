@@ -46,7 +46,7 @@ jobs:
         draft: false
         prerelease: false
         release_name: Grab the binary!
-        tag_name: ${{github.ref}}
+        tag_name: "release"
         body: "Build by github actions."
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
