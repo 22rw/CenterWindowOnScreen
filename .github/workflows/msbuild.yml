@@ -38,3 +38,9 @@ jobs:
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:platform=x64 ${{env.SOLUTION_FILE_PATH}}
+
+      # Upload the compiled executable as a build artifact
+    - uses: actions/upload-artifact@master
+      with:
+        name: CenterWindowOnScreen Executable
+        path: ./x64/Release/CenterWindowOnScreen.exe
