@@ -22,8 +22,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     int wWidth = windowRect.right - windowRect.left;
     int wHeight = windowRect.bottom - windowRect.top;
 
-    int mWidth = GetSystemMetrics(SM_CXSCREEN);
-    int mHeight = GetSystemMetrics(SM_CYSCREEN);
+    HMONITOR monitor = MonitorFromWindow(foregroundWindow, MONITOR_DEFAULTTONULL);
+    MONITORINFO mInfo = { 0 };
+    mInfo.cbSize = sizeof(MONITORINFO);
+    success = GetMonitorInfo(monitor, &mInfo);
+    if (!success) return GetLastError();
+
+    int mWidth = mInfo.rcMonitor.right;
+    int mHeight = mInfo.rcMonitor.bottom;
    
     int x = (mWidth - wWidth) / 2;
     int y = (mHeight - wHeight) / 2;
